@@ -1,8 +1,11 @@
 const soap = require('strong-soap').soap;
 class Recharge {
+    constructor(WSDL_URI) {
+        this.WSDL_URI = WSDL_URI;    
+    }
     getOperatorsDDD(dddValue) {
         return new Promise((resolve, reject) => {
-            const wsdlUri = 'http://hmlgtodaconta.is2b.com.br:54003/TodaConta/WebService?wsdl';
+            const wsdlUri = this.WSDL_URI;//'http://hmlgtodaconta.is2b.com.br:54003/TodaConta/WebService?wsdl';
 
             const options = {
                 wsdl_headers: {
