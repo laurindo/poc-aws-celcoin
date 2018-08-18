@@ -1,7 +1,10 @@
 const soap = require('strong-soap').soap;
 class Recharge {
-    constructor(WSDL_URI) {
-        this.WSDL_URI = WSDL_URI;    
+    constructor(WSDL_URI, SOAPAction, PONTO_ATENDIMENTO_LOGIN, PONTO_ATENDIMENTO_PASSWORD) {
+        this.WSDL_URI = WSDL_URI;
+        this.SOAPAction = SOAPAction;
+        this.PONTO_ATENDIMENTO_LOGIN = PONTO_ATENDIMENTO_LOGIN;
+        this.PONTO_ATENDIMENTO_PASSWORD = PONTO_ATENDIMENTO_PASSWORD;
     }
     getOperatorsDDD(dddValue) {
         const self = this;
@@ -10,7 +13,7 @@ class Recharge {
 
             const options = {
                 wsdl_headers: {
-                    'SOAPAction': 'http://GatewayWebService/IGatewayWeb/ProcessaTransacao',
+                    'SOAPAction': self.SOAPAction,//'http://GatewayWebService/IGatewayWeb/ProcessaTransacao',
                     'Content-Type': 'text/xml'
                 },
                 envelopeKey: 's'
@@ -27,8 +30,8 @@ class Recharge {
                     },
                     CpfCnpj: '39233281922',
                     PontoAtendimento: {
-                        Login: 'teste',
-                        Senha: 'teste'
+                        Login: self.PONTO_ATENDIMENTO_LOGIN,
+                        Senha: self.PONTO_ATENDIMENTO_PASSWORD
                     },
                     TipoTransacao: 'CONSULTAOPERADORADDD',
                     CategoriaRecarga: 'TODOS',
