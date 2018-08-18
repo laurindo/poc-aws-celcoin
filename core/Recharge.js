@@ -4,8 +4,9 @@ class Recharge {
         this.WSDL_URI = WSDL_URI;    
     }
     getOperatorsDDD(dddValue) {
+        const self = this;
         return new Promise((resolve, reject) => {
-            const wsdlUri = this.WSDL_URI;//'http://hmlgtodaconta.is2b.com.br:54003/TodaConta/WebService?wsdl';
+            const wsdlUri = self.WSDL_URI;//'http://hmlgtodaconta.is2b.com.br:54003/TodaConta/WebService?wsdl';
 
             const options = {
                 wsdl_headers: {
