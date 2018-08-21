@@ -1,19 +1,25 @@
 class MessageStatus {
-    getSuccess(result) {
+    getSuccess(statusCode = 200, result) {
         return {
-            message: 'SUCCESS',
-            code: statusCode,
-            type: 'info',
-            data: result
+            statusCode: statusCode,
+            body: JSON.stringify({
+                message: 'SUCCESS',
+                code: statusCode,
+                type: 'info',
+                data: result
+            })
         };
     }
 
     getError(statusCode = 500, errorDetails = 'Internal Error') {
         return {
-            message: 'ERROR',
-            code: statusCode,
-            type: 'error',
-            data: errorDetails
+            statusCode: statusCode,
+            body: JSON.stringify({
+                message: 'ERROR',
+                code: statusCode,
+                type: 'error',
+                data: errorDetails
+            })
         };
     }
 }
