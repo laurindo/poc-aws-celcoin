@@ -55,10 +55,10 @@ class Recharge {
     }
 
     /**
-     * @param {string} dddValue - 11, 85, other value
-     * @param {string} operator - 2097
+     * @param {string} dddValue     - 11, 85, other value
+     * @param {string} operatorId   - 2097, other value
     */
-    getValuesOperatorDDD(dddValue, operator) {
+    getValuesOperatorDDD(dddValue, operatorId) {
         const self = this;
         return new Promise((resolve, reject) => {
             const wsdlUri = self.WebServerUtils.getWSDL_URI();
@@ -67,7 +67,7 @@ class Recharge {
             const args = {
               transacao: {
                 ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaValoresOperadoraDDD', 'CONSULTAVALORESOPERADORADDD'),
-                OperadoraId: operator,
+                OperadoraId: operatorId,
                 ddd: dddValue
               }
             };
@@ -90,12 +90,12 @@ class Recharge {
 
                     const valores = Valores.ValorRecarga.map(item => {
                         return {
-                        coast: parseFloat(item.CustoRecarga),
-                        name: item.NomeProduto,
-                        validate: parseInt(item.ValidadeProduto),
-                        bonus: parseFloat(item.ValorBonus),
-                        max: parseFloat(item.ValorMax),
-                        min: parseFloat(item.ValorMin)
+                            coast: parseFloat(item.CustoRecarga),
+                            name: item.NomeProduto,
+                            validate: parseInt(item.ValidadeProduto),
+                            bonus: parseFloat(item.ValorBonus),
+                            max: parseFloat(item.ValorMax),
+                            min: parseFloat(item.ValorMin)
                         }
                     });
                 
@@ -263,23 +263,20 @@ class Recharge {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('Recarga', 'RECARGA'),
                     EnderecoIP: '127.0.0.1',
-                    DadosConsultaOperacao: {
-                        DataOperacao: '0001-01-01T00:00:00',
-                        TerminalExterno: self.WebServerUtils.getExternalTerminal(),
-                        DadosPagamento: {
-                            FormaPagamento: paymentType,
-                            QtdParcelas: 0,
-                            pontos: 0,
-                            valor: valueToPay,
-                            valorBruto: 0,
-                            valorDesconto: 0
-                        },
-                        operadoraId: operatorId,
-                        telefoneRecarga: {
-                            CodigoEstado: ddd, 
-                            CodigoPais: 55,
-                            Numero: phoneNumber
-                        }
+                    TerminalExterno: self.WebServerUtils.getExternalTerminal(),
+                    operadoraId: operatorId,
+                    DadosPagamento: {
+                        FormaPagamento: paymentType,
+                        QtdParcelas: 0,
+                        pontos: 0,
+                        valor: parseFloat(valueToPay),
+                        valorBruto: 0,
+                        valorDesconto: 0
+                    },
+                    telefoneRecarga: {
+                        CodigoEstado: ddd, 
+                        CodigoPais: 55,
+                        Numero: phoneNumber
                     }
                 }
             }
