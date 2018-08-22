@@ -183,15 +183,16 @@ class Recharge {
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
 
-                    const { CodigoErro, MensagemErro, Operadoras } = result.ProcessaTransacaoResult;
+                    const { CodigoErro, MensagemErro, DadosOperacao } = result.ProcessaTransacaoResult;
 
                     if (CodigoErro !== '000') {
                         reject({
-                            error: true,
-                            code: CodigoErro,
-                            message: MensagemErro
+                        error: true,
+                        code: CodigoErro,
+                        message: MensagemErro
                         });
                     }
+
                     const retorno = {
                         Autenticacao: DadosOperacao.Autenticacao,
                         CodigoErro: DadosOperacao.CodigoErro,
@@ -202,7 +203,7 @@ class Recharge {
                         StatusOperacao: DadosOperacao.StatusOperacao,
                         TerminalIdExterno: DadosOperacao.TerminalIdExterno
                     };
-                  
+                
                     resolve(retorno);
                 });
             });
