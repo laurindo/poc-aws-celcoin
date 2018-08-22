@@ -105,7 +105,7 @@ class Recharge {
         });
     }
 
-    getPendencia() {
+    checkPendency() {
         const self = this;
         return new Promise((resolve, reject) => {
             const wsdlUri = self.WebServerUtils.getWSDL_URI();
