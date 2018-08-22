@@ -2,7 +2,7 @@ const Recharge = require('./Recharge');
 const Payment = require('./Payment');
 const Bill = require('./Bill');
 const Bank = require('./Bank');
-const MessageStatus = require('./MessageStatus');
+const MessageStatus = require('./utils/MessageStatus');
 
 module.exports = {
     Recharge,
