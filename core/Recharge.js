@@ -11,46 +11,7 @@ class Recharge {
     getOperatorsDDD(dddValue) {
         const self = this;
         return new Promise((resolve, reject) => {
-            const wsdlUri = self.WebServerUtils.getWSDL_URI();
-            const options = self.WebServerUtils.getOptions();
-            const args = {
-                transacao: {
-                    ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaOperadoraDDD', 'CONSULTAOPERADORADDD'),
-                    CategoriaRecarga: 'TODOS',
-                    TipoRecarga: 'ONLINE',
-                    ddd: dddValue
-                }
-            }
-
-            soap.createClient(wsdlUri, options, function(err, client) {
-                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
-
-                method(args, function(err, result, envelope, soapHeader) {
-                    if (err) reject(err);
-
-                    const { CodigoErro, MensagemErro, Operadoras } = result.ProcessaTransacaoResult;
-
-                    if (CodigoErro !== '000') {
-                        reject({
-                            error: true,
-                            code: CodigoErro,
-                            message: MensagemErro
-                        });
-                    }
-                    console.log(Operadoras);
-                    resolve(Operadoras);
-                    // const operadoras = Operadoras.Operadora.map(item => {
-                    //   return {
-                    //     id: parseInt(item.OperadoraId),
-                    //     name: item.Nome,
-                    //     max: parseFloat(item.ValorMax),
-                    //     min: parseFloat(item.ValorMin)
-                    //   }
-                    // });
-
-                    // resolve(operadoras);
-                });
-            });
+            resolve(true);
         });
     }
 
