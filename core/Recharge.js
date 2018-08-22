@@ -157,7 +157,11 @@ class Recharge {
         });   
     }
 
-    getStatus(id) {
+    /**
+     * @param {string} protocoloId        - 2143935
+     * @param {iso date} operationDate    - 2018-08-21T23:09:22
+    */
+    getStatus(protocoloId, operationDate) {
         const self = this;
         return new Promise((resolve, reject) => {
             const wsdlUri = self.WebServerUtils.getWSDL_URI();
@@ -167,8 +171,8 @@ class Recharge {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoStatusOperacao', 'CONSULTASTATUS'),
                     EnderecoIP: '127.0.0.1',
                     DadosConsultaOperacao: {
-                        DataOperacao: '0001-01-01T00:00:00',
-                        ProtocoloId: id
+                        DataOperacao: operationDate,
+                        ProtocoloId: protocoloId
                     }
                 }
             }
@@ -316,6 +320,9 @@ class Recharge {
         });     
     }
 
+    /**
+     * @param {string} protocoloId        - 8143935
+    */
     confirmation(protocoloId) {
         const self = this;
         return new Promise((resolve, reject) => {
