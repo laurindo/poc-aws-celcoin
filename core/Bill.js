@@ -5,6 +5,9 @@ class Bill {
         this.WebServerUtils = new WebServerUtils(stageVariables);
     }
 
+    /**
+     * @param {string} code - 846300000003015202962013710081210001001452812397
+    */
     check(code) {
         const self = this;
         return new Promise((resolve, reject) => {
@@ -15,7 +18,7 @@ class Bill {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaDadosConta', 'CONSULTADADOSCONTA'),
                     EnderecoIP: '127.0.0.1',
                     CodBarras: {
-                        linhaDigitavel: code 
+                        linhaDigitavel: code
                         //846300000003015202962013710081210001001452812397
                         //03399492813696200078677366209011100000000000000
                     }
@@ -68,20 +71,21 @@ class Bill {
      *      DataVencimento: '2018-10-28T00:00:00Z',
      *      TipoServico: 'FichaCompensacao' / 'ContaConcessionaria',
      *      LinhaDigitavel: '846300000003015202962013710081210001001452812397',
-     *      Valor: 99
-     *  }
-     * @param {string} CpfCnpj      - 03884192965, other value
-     * @param {string} typePayment  - 'DINHEIRO' or 'CARTAO' 
+     *      Valor: 99,
+     *      TipoPagamento: 'DINHEIRO' or 'CARTAO',
+     *      CpfCnpj: '03884192965' [OPTIONAL]
+     *  } 
     */
-    pay(charging, CpfCnpj, typePayment) {
+    pay(charging) {
         const self = this;
         return new Promise((resolve, reject) => {
             if (!charging.DataVencimento) {
                 return reject({
                     error: true,
                     code: 400,
+                    detail: JSON.stringify(charging),
                     message: 'DataVencimento is required'
-                })
+                });
             }
 
             if (!charging.Valor) {
@@ -92,7 +96,7 @@ class Bill {
                 })
             }
 
-            if (!typePayment) {
+            if (!charging.typePayment) {
                 return reject({
                     error: true,
                     code: 400,
@@ -106,7 +110,7 @@ class Bill {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('Conta', 'RECEBERCONTA'),
                     EnderecoIP: '127.0.0.1',
-                    CpfCnpj,
+                    CpfCnpj: charging.CpfCnpj || '03884192965',
                     SiteIntegracaoId: 0,
                     CodBarras: {
                         TipoServico: cobranca.TipoServico,
