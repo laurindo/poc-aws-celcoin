@@ -96,11 +96,11 @@ class Bill {
                 })
             }
 
-            if (!charging.typePayment) {
+            if (!charging.TipoPagamento) {
                 return reject({
                     error: true,
                     code: 400,
-                    message: 'typePayment(DINHEIRO or CARTAO) is required'
+                    message: 'TipoPagamento(DINHEIRO or CARTAO) is required'
                 })    
             }
             
@@ -113,18 +113,18 @@ class Bill {
                     CpfCnpj: charging.CpfCnpj || '03884192965',
                     SiteIntegracaoId: 0,
                     CodBarras: {
-                        TipoServico: cobranca.TipoServico,
-                        linhaDigitavel: cobranca.LinhaDigitavel
+                        TipoServico: charging.TipoServico,
+                        linhaDigitavel: charging.LinhaDigitavel
                       }, 
                       DadosPagamento: {
-                        FormaPagamento: typePayment,
-                        valor: cobranca.Valor, 
+                        FormaPagamento: charging.TipoPagamento,
+                        valor: charging.Valor, 
                         // QtdParcelas: 0,
                         // pontos: 0,
                         valorBruto: 0,
                         valorDesconto: 0
                       },
-                      DataVencimento: cobranca.DataVencimento
+                      DataVencimento: charging.DataVencimento
                 }
             }
 
