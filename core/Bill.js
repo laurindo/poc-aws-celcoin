@@ -6,6 +6,7 @@ class Bill {
     }
 
     /**
+     * 1. Valida Linha Digitavel
      * @param {string} code - 846300000003015202962013710081210001001452812397
     */
     check(code) {
@@ -112,19 +113,19 @@ class Bill {
                     EnderecoIP: '127.0.0.1',
                     CpfCnpj: charging.CpfCnpj || '03884192965',
                     SiteIntegracaoId: 0,
+                    DataVencimento: charging.DataVencimento,
                     CodBarras: {
                         TipoServico: charging.TipoServico,
                         linhaDigitavel: charging.LinhaDigitavel
-                      }, 
-                      DadosPagamento: {
+                    }, 
+                    DadosPagamento: {
                         FormaPagamento: charging.TipoPagamento,
                         valor: charging.Valor, 
                         // QtdParcelas: 0,
                         // pontos: 0,
                         valorBruto: 0,
                         valorDesconto: 0
-                      },
-                      DataVencimento: charging.DataVencimento
+                    }
                 }
             }
 
@@ -138,15 +139,15 @@ class Bill {
                     const consulta = result.ProcessaTransacaoResult;
 
                     const retorno = {
-                    StatusTransacao: consulta.StatusTransacao,
-                    Autenticacao: consulta.Autenticacao,
-                    ComprovanteFormatado: consulta.Comprovante.ComprovanteFormatado,
-                    DataLiquidacao: consulta.DataLiquidacao,
-                    DataOperacao: consulta.DataOperacao,
-                    ProtocoloId: consulta.ProtocoloId
+                        StatusTransacao: consulta.StatusTransacao,
+                        Autenticacao: consulta.Autenticacao,
+                        ComprovanteFormatado: consulta.Comprovante.ComprovanteFormatado,
+                        DataLiquidacao: consulta.DataLiquidacao,
+                        DataOperacao: consulta.DataOperacao,
+                        ProtocoloId: consulta.ProtocoloId
                     }
 
-                    resolve(retorno);
+                    resolve(consulta);
                 });
             });
         });
