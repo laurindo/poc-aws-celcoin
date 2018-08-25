@@ -144,10 +144,11 @@ class Bill {
                         ComprovanteFormatado: consulta.Comprovante.ComprovanteFormatado,
                         DataLiquidacao: consulta.DataLiquidacao,
                         DataOperacao: consulta.DataOperacao,
-                        ProtocoloId: consulta.ProtocoloId
+                        ProtocoloId: consulta.ProtocoloId,
+                        MensagemErro: consulta.MensagemErro // caso ocorra erro será devolvido uma mensagem
                     }
 
-                    resolve(consulta);
+                    resolve(retorno);
                 });
             });
         });
