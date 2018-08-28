@@ -194,6 +194,47 @@ class Bill {
             });
         });
     }
+
+    /**
+     * @param {string} protocoloId          - protocol id
+     * @param {string} statusConfirmation   - 'CONFIRMADA'
+     * 
+    */
+    confirmPayment(protocoloId, statusConfirmation) {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const wsdlUri = self.WebServerUtils.getWSDL_URI();
+            const options = self.WebServerUtils.getOptions();
+            const args = {
+                transacao: {
+                    ...self.WebServerUtils.getTransactionArgs('TransacaoConfirmacao', 'CONF'),
+                    ProtocoloIdConfirmacao: protocoloId,
+                    StatusConfirmacao: statusConfirmation
+                }
+            }
+
+            soap.createClient(wsdlUri, options, function(err, client) {
+                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
+
+                method(args, function(err, result, envelope, soapHeader) {
+                    if (err) reject(err);
+                    const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
+                    const consulta = result.ProcessaTransacaoResult;
+                    if (CodigoErro !== '000') {
+                        reject({
+                            error: true,
+                            code: CodigoErro,
+                            message: MensagemErro
+                        });
+                    }
+                    const retorno = {
+                        StatusTransacao: consulta.StatusTransacao,
+                    }
+                    resolve(retorno);
+                });
+            });
+        });
+    }
 }
 
 module.exports = Bill;
