@@ -55,7 +55,10 @@ class WebServerUtils {
         if (charging && charging.TipoPagamento.toUpperCase() === 'CARTAO') {
             return { 
                 QtdParcelas: charging.QtdParcelas,
-                pontos: 0
+                pontos: 0,
+                nomeTitular: charging.nomeTitular,
+                numeroCartao: charging.numeroCartao,
+                dataVencimento: charging.dataVencimento
             };
         }
         return {};
