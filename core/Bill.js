@@ -119,6 +119,59 @@ class Bill {
             });
         }); 
     }
+
+    /**
+     * 3. Consulta Status
+     * @param {string} protocoloId - 
+    */
+    checkStatus(protocoloId) {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const wsdlUri = self.WebServerUtils.getWSDL_URI();
+            const options = self.WebServerUtils.getOptions();
+            const args = {
+                transacao: {
+                    ...self.WebServerUtils.getTransactionArgs('TransacaoStatusOperacao', 'CONSULTASTATUS'),
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                    DadosConsultaOperacao: {
+                        DataOperacao: '0001-01-01T00:00:00',
+                        ProtocoloId: protocoloId
+                    }
+                }
+            }
+
+            soap.createClient(wsdlUri, options, function(err, client) {
+                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
+
+                method(args, function(err, result, envelope, soapHeader) {
+                    if (err) reject(err);
+
+                    const { CodigoErro, MensagemErro, DadosOperacao } = result.ProcessaTransacaoResult;
+
+                    if (CodigoErro !== '000') {
+                        reject({
+                            error: true,
+                            code: CodigoErro,
+                            message: MensagemErro
+                        });
+                    }
+
+                    const retorno = {
+                        Autenticacao: DadosOperacao.Autenticacao,
+                        CodigoErro: DadosOperacao.CodigoErro,
+                        DataOperacao: DadosOperacao.DataOperacao,
+                        MensagemErro: DadosOperacao.MensagemErro,
+                        NsuExterno: DadosOperacao.NsuExterno,
+                        ProtocoloId: DadosOperacao.ProtocoloId,
+                        StatusOperacao: DadosOperacao.StatusOperacao,
+                        TerminalIdExterno: DadosOperacao.TerminalIdExterno
+                    };
+                
+                    resolve(retorno);
+                });
+            });
+        }); 
+    }
     
     /**
      * @param {object} charging - 
