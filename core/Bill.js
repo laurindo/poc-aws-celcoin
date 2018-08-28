@@ -17,7 +17,7 @@ class Bill {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaDadosConta', 'CONSULTADADOSCONTA'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                     CodBarras: {
                         linhaDigitavel: code
                         //846300000003015202962013710081210001001452812397
@@ -110,7 +110,7 @@ class Bill {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('Conta', 'RECEBERCONTA'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                     CpfCnpj: charging.CpfCnpj || '03884192965',
                     SiteIntegracaoId: 0,
                     DataVencimento: charging.DataVencimento,
@@ -119,10 +119,9 @@ class Bill {
                         linhaDigitavel: charging.LinhaDigitavel
                     }, 
                     DadosPagamento: {
-                        FormaPagamento: charging.TipoPagamento,
-                        valor: charging.Valor, 
-                        // QtdParcelas: 0,
-                        // pontos: 0,
+                        FormaPagamento: charging.TipoPagamento.toUpperCase(),
+                        valor: charging.Valor,
+                        ...self.getAttrsByCardPayment(charging),
                         valorBruto: 0,
                         valorDesconto: 0
                     }
@@ -197,7 +196,7 @@ class Bill {
 
     /**
      * @param {string} protocoloId          - protocol id
-     * @param {string} statusConfirmation   - 'CONFIRMADA'
+     * @param {string} statusConfirmation   - 'CONFIRMADA' / 'CANCELADA'
      * 
     */
     confirmPayment(protocoloId, statusConfirmation) {

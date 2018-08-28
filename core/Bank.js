@@ -14,7 +14,7 @@ class Bank {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaBanco', 'CONSULTABANCOS'),
-                    EnderecoIP: '127.0.0.1'
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS()
                 }
             }
 

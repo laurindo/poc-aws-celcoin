@@ -113,7 +113,7 @@ class Recharge {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaPendencia', 'CONSULTAPENDENCIA'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                 }
             }
 
@@ -168,7 +168,7 @@ class Recharge {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoStatusOperacao', 'CONSULTASTATUS'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                     DadosConsultaOperacao: {
                         DataOperacao: '0001-01-01T00:00:00',
                         ProtocoloId: protocoloId
@@ -217,7 +217,7 @@ class Recharge {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaLimite', 'CONSULTALIMITES'),
-                    EnderecoIP: '127.0.0.1'
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                 }
             }
 
@@ -266,7 +266,7 @@ class Recharge {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('Recarga', 'RECARGA'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                     TerminalExterno: self.WebServerUtils.getExternalTerminal(),
                     operadoraId: operatorId,
                     DadosPagamento: {
@@ -331,7 +331,7 @@ class Recharge {
             const args = {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoConfirmacao', 'CONF'),
-                    EnderecoIP: '127.0.0.1',
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
                     ProtocoloIdConfirmacao: protocoloId,
                     StatusConfirmacao: 'CONFIRMADA'
                 }

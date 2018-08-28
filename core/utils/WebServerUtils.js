@@ -5,6 +5,7 @@ class WebServerUtils {
         this.ExternalTerminal = stageVariables.EXTERNAL_TERMINAL;
         this.PONTO_ATENDIMENTO_LOGIN = stageVariables.PONTO_ATENDIMENTO_LOGIN;
         this.PONTO_ATENDIMENTO_PASSWORD = stageVariables.PONTO_ATENDIMENTO_PASSWORD;
+        this.IP_ADDRESS = stageVariables.IP_ADDRESS;
     }
 
     getWSDL_URI() {
@@ -44,6 +45,20 @@ class WebServerUtils {
             },
             TipoTransacao: typeTransaction
         };
+    }
+
+    getIP_ADDRESS() {
+        return this.IP_ADDRESS;
+    }
+
+    getAttrsByCardPayment(charging) {
+        if (charging && charging.TipoPagamento.toUpperCase() === 'CARTAO') {
+            return { 
+                QtdParcelas: charging.QtdParcelas,
+                pontos: 0
+            };
+        }
+        return {};
     }
 }
 
