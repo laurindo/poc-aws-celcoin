@@ -65,6 +65,60 @@ class Bill {
             });
         }); 
     }
+
+    /**
+     * 2. Consulta Pendencia
+    */
+    checkPendency() {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const wsdlUri = self.WebServerUtils.getWSDL_URI();
+            const options = self.WebServerUtils.getOptions();
+            const args = {
+                transacao: {
+                    ...self.WebServerUtils.getTransactionArgs('TransacaoConsultaPendencia', 'CONSULTAPENDENCIA'),
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                }
+            }
+
+            soap.createClient(wsdlUri, options, function(err, client) {
+                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
+
+                method(args, function(err, result, envelope, soapHeader) {
+                    if (err) reject(err);
+                    const { CodigoErro, MensagemErro, PendenciaCliente } = result.ProcessaTransacaoResult;
+                    const retorno  = result.ProcessaTransacaoResult;
+
+                    if (CodigoErro !== '000') {
+                        reject({
+                            error: true,
+                            code: CodigoErro,
+                            message: MensagemErro
+                        });
+                    }
+
+                    // NESTE PONTO, NAO É NECESSARIO ITERAR O RESULTADO, ... VAI DEPENDER DO MODELO DE NEGOCIO
+                    // let valores = {pendencias: 0};
+                    // if(PendenciaCliente.TransacoesPendentes!==undefined){
+                    //    valores = PendenciaCliente.TransacoesPendentes.map(item => {
+                    //     return {
+                    //       Autenticacao: item.Autenticacao,
+                    //       DataOperacao: item.DataOperacao,
+                    //       NsuExterno: item.NsuExterno,
+                    //       ProtocoloId: item.ProtocoloId,
+                    //       StatusPendencia: item.StatusPendencia,
+                    //       TerminalIdExterno: item.TerminalIdExterno,
+                    //     }
+                    //   });
+                    // }
+                
+                    // resolve(valores);
+
+                    resolve(retorno);
+                });
+            });
+        }); 
+    }
     
     /**
      * @param {object} charging - 
