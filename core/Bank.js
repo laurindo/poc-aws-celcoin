@@ -58,66 +58,74 @@ class Bank {
     transfer(data) {
         const self = this;
         return new Promise((resolve, reject) => {
-            const wsdlUri = self.WebServerUtils.getWSDL_URI();
-            const options = self.WebServerUtils.getOptions();
-            const args = {
-                transacao: {
-                    ...self.WebServerUtils.getTransactionArgs('TransacaoSaqueBanco', 'SAQUEBANCO'),
-                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
-                    CpfCnpj: "30410597899",
-                    NSUExterno: "000000210602",
-                    Agencia: data.agencyNumber,
-                    BancoId: data.bankId,
-                    Conta: data.accountNumber,
-                    DigitoVerificador: data.verifyDigit,
-                    NomeCompleto: data.fullName,
-                    TipoContaBancaria: data.typeAccountBank.toUpperCase(), //CC
-                    DadosPagamento: {
-                        FormaPagamento: data.typePayment.toUpperCase(),
-                        QtdParcelas: data.amountParcels,
-                        pontos: 0,
-                        valor: data.price,
-                        valorBruto: 0.0,
-                        valorDesconto: 0.0
+            try {
+                const wsdlUri = self.WebServerUtils.getWSDL_URI();
+                const options = self.WebServerUtils.getOptions();
+                const args = {
+                    transacao: {
+                        ...self.WebServerUtils.getTransactionArgs('TransacaoSaqueBanco', 'SAQUEBANCO'),
+                        EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                        CpfCnpj: "30410597899",
+                        NSUExterno: "000000210602",
+                        Agencia: data.agencyNumber,
+                        BancoId: data.bankId,
+                        Conta: data.accountNumber,
+                        DigitoVerificador: data.verifyDigit,
+                        NomeCompleto: data.fullName,
+                        TipoContaBancaria: data.typeAccountBank.toUpperCase(), //CC
+                        DadosPagamento: {
+                            FormaPagamento: data.typePayment.toUpperCase(),
+                            QtdParcelas: data.amountParcels,
+                            pontos: 0,
+                            valor: data.price,
+                            valorBruto: 0.0,
+                            valorDesconto: 0.0
+                        }
                     }
                 }
-            }
-
-            soap.createClient(wsdlUri, options, function(err, client) {
-                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
-
-                method(args, function(err, result, envelope, soapHeader) {
-                    if (err) reject(err);
-
-                    const { 
-                        CodigoErro, 
-                        MensagemErro,
-                        ProtocoloId,
-                        DataOperacao,
-                        DataLiquidacao,
-                        DataPrevisaoProcessamento,
-                        Autenticacao,
-                    } = result.ProcessaTransacaoResult;
-                    
-                    if (CodigoErro !== '000') {
-                        reject({
-                            error: true,
-                            code: CodigoErro,
-                            message: MensagemErro
+    
+                soap.createClient(wsdlUri, options, function(err, client) {
+                    const method = self.WebServerUtils.getMethodToProcessTransaction(client);
+    
+                    method(args, function(err, result, envelope, soapHeader) {
+                        if (err) return reject(err);
+    
+                        const { 
+                            CodigoErro, 
+                            MensagemErro,
+                            ProtocoloId,
+                            DataOperacao,
+                            DataLiquidacao,
+                            DataPrevisaoProcessamento,
+                            Autenticacao,
+                        } = result.ProcessaTransacaoResult;
+                        
+                        if (CodigoErro !== '000') {
+                            return reject({
+                                error: true,
+                                code: CodigoErro,
+                                message: MensagemErro
+                            });
+                        }
+    
+                        resolve({
+                            CodigoErro, 
+                            MensagemErro,
+                            ProtocoloId,
+                            DataOperacao,
+                            DataLiquidacao,
+                            DataPrevisaoProcessamento,
+                            Autenticacao,
                         });
-                    }
-
-                    resolve({
-                        CodigoErro, 
-                        MensagemErro,
-                        ProtocoloId,
-                        DataOperacao,
-                        DataLiquidacao,
-                        DataPrevisaoProcessamento,
-                        Autenticacao,
                     });
                 });
-            });
+            } catch (err) {
+                reject({
+                    error: true,
+                    code: 500,
+                    message: err
+                })
+            }
         });    
     }
 }
