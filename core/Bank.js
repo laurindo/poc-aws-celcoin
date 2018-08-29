@@ -41,6 +41,70 @@ class Bank {
             });
         });
     }
+
+    /**
+     * {
+     *    typePayment: 'DINHEIRO',
+     *    amountParcels: 0,
+     *    agencyNumber: 122,
+     *    accountNumber: 12121,
+     *    bankId: 104,
+     *    fullName: TESTE caixa cc,
+     *    verifyDigit: 2,
+     *    typeAccountBank: 'cc',
+     *    price: 501.50
+     * }
+    */
+    transfer(data) {
+        const self = this;
+        return new Promise((resolve, reject) => {
+            const wsdlUri = self.WebServerUtils.getWSDL_URI();
+            const options = self.WebServerUtils.getOptions();
+            const args = {
+                transacao: {
+                    ...self.WebServerUtils.getTransactionArgs('TransacaoSaqueBanco', 'SAQUEBANCO'),
+                    EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                    Agencia: data.agencyNumber,
+                    BancoId: data.bankId,
+                    Conta: data.accountNumber,
+                    DigitoVerificador: data.verifyDigit,
+                    NomeCompleto: data.fullName,
+                    TipoContaBancaria: data.typeAccountBank.toUpperCase(), //CC
+                    DadosPagamento: {
+                        FormaPagamento: data.typePayment,
+                        QtdParcelas: data.amountParcels,
+                        pontos: 0,
+                        valor: data.price,
+                        valorBruto: 0,
+                        valorDesconto: 0.0
+                    }
+                }
+            }
+
+            soap.createClient(wsdlUri, options, function(err, client) {
+                const method = self.WebServerUtils.getMethodToProcessTransaction(client);
+
+                method(args, function(err, result, envelope, soapHeader) {
+                    if (err) reject(err);
+
+                    return resolve(result);
+                    const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
+                    const consulta = result.ProcessaTransacaoResult;
+
+                    if (CodigoErro !== '000') {
+                        reject({
+                            error: true,
+                            code: CodigoErro,
+                            message: MensagemErro
+                        });
+                    }
+
+                    const retorno = consulta.ListaBancos.Banco;
+                    resolve(retorno);
+                });
+            });
+        });    
+    }
 }
 
 module.exports = Bank;
