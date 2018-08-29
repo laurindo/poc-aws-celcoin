@@ -89,9 +89,16 @@ class Bank {
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
 
-                    const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
-                    const consulta = result.ProcessaTransacaoResult;
-
+                    const { 
+                        CodigoErro, 
+                        MensagemErro,
+                        ProtocoloId,
+                        DataOperacao,
+                        DataLiquidacao,
+                        DataPrevisaoProcessamento,
+                        Autenticacao,
+                    } = result.ProcessaTransacaoResult;
+                    
                     if (CodigoErro !== '000') {
                         reject({
                             error: true,
@@ -100,7 +107,15 @@ class Bank {
                         });
                     }
 
-                    resolve(consulta);
+                    resolve({
+                        CodigoErro, 
+                        MensagemErro,
+                        ProtocoloId,
+                        DataOperacao,
+                        DataLiquidacao,
+                        DataPrevisaoProcessamento,
+                        Autenticacao,
+                    });
                 });
             });
         });    
