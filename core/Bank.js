@@ -44,15 +44,15 @@ class Bank {
 
     /**
      * {
-     *    typePayment: 'DINHEIRO',
-     *    amountParcels: 0,
-     *    agencyNumber: 122,
-     *    accountNumber: 12121,
-     *    bankId: 104,
-     *    fullName: TESTE caixa cc,
-     *    verifyDigit: 2,
-     *    typeAccountBank: 'cc',
-     *    price: 501.50
+            typePayment: 'DINHEIRO',
+            amountParcels: 0,
+            agencyNumber: 122,
+            accountNumber: 12121,
+            bankId: 104,
+            fullName: TESTE caixa cc,
+            verifyDigit: 2,
+            typeAccountBank: 'cc',
+            price: 501.50
      * }
     */
     transfer(data) {
@@ -64,6 +64,8 @@ class Bank {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoSaqueBanco', 'SAQUEBANCO'),
                     EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                    CpfCnpj: "30410597899",
+                    NSUExterno: "000000210602",
                     Agencia: data.agencyNumber,
                     BancoId: data.bankId,
                     Conta: data.accountNumber,
@@ -71,11 +73,11 @@ class Bank {
                     NomeCompleto: data.fullName,
                     TipoContaBancaria: data.typeAccountBank.toUpperCase(), //CC
                     DadosPagamento: {
-                        FormaPagamento: data.typePayment,
+                        FormaPagamento: data.typePayment.toUpperCase(),
                         QtdParcelas: data.amountParcels,
                         pontos: 0,
                         valor: data.price,
-                        valorBruto: 0,
+                        valorBruto: 0.0,
                         valorDesconto: 0.0
                     }
                 }
