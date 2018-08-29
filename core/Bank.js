@@ -64,6 +64,7 @@ class Bank {
                 transacao: {
                     ...self.WebServerUtils.getTransactionArgs('TransacaoSaqueBanco', 'SAQUEBANCO'),
                     EnderecoIP: self.WebServerUtils.getIP_ADDRESS(),
+                    RespostaTransacao: true,
                     CpfCnpj: "30410597899",
                     NSUExterno: "000000210602",
                     Agencia: data.agencyNumber,
