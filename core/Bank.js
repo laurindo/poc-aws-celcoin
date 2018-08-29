@@ -89,7 +89,7 @@ class Bank {
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
 
-                    return resolve(result);
+                    return resolve(true);
                     const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
                     const consulta = result.ProcessaTransacaoResult;
 
