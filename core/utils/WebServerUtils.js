@@ -43,7 +43,8 @@ class WebServerUtils {
                 Login: this.PONTO_ATENDIMENTO_LOGIN,
                 Senha: this.PONTO_ATENDIMENTO_PASSWORD
             },
-            TipoTransacao: typeTransaction
+            TipoTransacao: typeTransaction,
+            Versao: 2.0
         };
     }
 
