@@ -43,7 +43,8 @@ class Bank {
     }
 
     /**
-     * {
+     * @param {object} data
+     * Example {
             typePayment: 'DINHEIRO',
             amountParcels: 0,
             agencyNumber: 122,

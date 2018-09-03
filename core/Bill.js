@@ -228,7 +228,7 @@ class Bill {
                     DadosPagamento: {
                         FormaPagamento: charging.TipoPagamento.toUpperCase(),
                         valor: charging.Valor,
-                        ...self.getAttrsByCardPayment(charging),
+                        ...self.WebServerUtils.getAttrsByCardPayment(charging),
                         valorBruto: 0,
                         valorDesconto: 0
                     }
