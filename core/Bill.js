@@ -309,7 +309,7 @@ class Bill {
                     const retorno = {
                         StatusTransacao: consulta.StatusTransacao,
                         Autenticacao: consulta.Autenticacao,
-                        ComprovanteFormatado: consulta.Comprovante.ComprovanteFormatado,
+                        ComprovanteFormatado: (consulta && consulta.Comprovante) ? consulta.Comprovante.ComprovanteFormatado : '',
                         DataLiquidacao: consulta.DataLiquidacao,
                         DataOperacao: consulta.DataOperacao,
                         ProtocoloId: consulta.ProtocoloId,
