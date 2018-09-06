@@ -32,6 +32,22 @@ class Bill {
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
 
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
+
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
+
                     const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
                     const consulta = result.ProcessaTransacaoResult;
 
@@ -86,6 +102,22 @@ class Bill {
 
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
+
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
+
                     const { CodigoErro, MensagemErro, PendenciaCliente } = result.ProcessaTransacaoResult;
                     const retorno  = result.ProcessaTransacaoResult;
 
@@ -145,6 +177,22 @@ class Bill {
 
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
+
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
+
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
 
                     const { CodigoErro, MensagemErro, DadosOperacao } = result.ProcessaTransacaoResult;
 
@@ -240,7 +288,21 @@ class Bill {
 
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
 
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
                     //console.log("CONTA",result.ProcessaTransacaoResult);
                     const consulta = result.ProcessaTransacaoResult;
 
@@ -281,6 +343,21 @@ class Bill {
 
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
+
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
 
                     const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
                     const consulta = result.ProcessaTransacaoResult;
@@ -324,6 +401,20 @@ class Bill {
 
                 method(args, function(err, result, envelope, soapHeader) {
                     if (err) reject(err);
+                    if (!result) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'the server returns an empty result'
+                        });
+                    }
+                    if (!result.ProcessaTransacaoResult) {
+                        return reject({
+                            error: true,
+                            code: '',
+                            message: 'ProcessaTransacaoResult is undefined'
+                        });
+                    }
                     const { CodigoErro, MensagemErro } = result.ProcessaTransacaoResult;
                     const consulta = result.ProcessaTransacaoResult;
                     if (CodigoErro !== '000') {
